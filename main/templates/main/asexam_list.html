@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Экзамены — Смирнов Александр Сергеевич, 231-323</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Смирнов Александр Сергеевич, группа 231-323</h1>
+    <h2>Список опубликованных экзаменов</h2>
+    <table>
+        <tr>
+            <th>Название экзамена</th>
+            <th>Дата создания</th>
+            <th>Дата проведения</th>
+            <th>Задание (картинка)</th>
+            <th>Пользователи</th>
+        </tr>
+        {% for exam in exams %}
+        <tr>
+            <td>{{ exam.title }}</td>
+            <td>{{ exam.created_at|date:'d.m.Y H:i' }}</td>
+            <td>{{ exam.exam_date|date:'d.m.Y' }}</td>
+            <td>
+                {% if exam.image %}
+                    <img src="{{ exam.image.url }}" alt="Задание" style="max-width:120px; max-height:120px;">
+                {% else %}
+                    Нет изображения
+                {% endif %}
+            </td>
+            <td>
+                {% for user in exam.users.all %}
+                    {{ user.get_full_name|default:user.username }} ({{ user.email }})<br>
+                {% empty %}
+                    Нет пользователей
+                {% endfor %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Нет опубликованных экзаменов.</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html> 
